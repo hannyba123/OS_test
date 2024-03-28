@@ -1,0 +1,175 @@
+DEFAULT menu.c32
+MENU TITLE  Boot Menu
+NOHALT 1
+PROMPT 0
+TIMEOUT 1200
+
+#LABEL install ESXi7
+#  KERNEL ../../esxi7/mboot.c32
+#  APPEND -c boot.cfg
+#  MENU LABEL ESXi-7.0U3d-19482537-standard ^Installer
+
+LABEL SLES15.4
+  KERNEL ../../SLE-15-SP4-x86_64/boot/x86_64/loader/linux
+  APPEND initrd=../../SLE-15-SP4-x86_64/boot/x86_64/loader/initrd instsys=tftp://192.168.50.254/SLE-15-SP4-x86_64/boot/x86_64/root install=ftp://192.168.50.254/ self_update=0
+
+
+LABEL SLES15.3
+  #ipAPPEND 2
+  KERNEL ../../SLE-15-SP3-x86_64/boot/x86_64/loader/linux
+  APPEND initrd=../../SLE-15-SP3-x86_64/boot/x86_64/loader/initrd instsys=tftp://192.168.50.254/SLE-15-SP3-x86_64/boot/x86_64/root install=ftp://192.168.50.254/ self_update=0
+
+LABEL SLES15.2
+  #ipAPPEND 2
+  KERNEL ../../SLE-15-SP2-x86_64/boot/x86_64/loader/linux
+  APPEND initrd=../../SLE-15-SP2-x86_64/boot/x86_64/loader/initrd instsys=tftp://192.168.50.254/SLE-15-SP2-x86_64/boot/x86_64/root install=ftp://192.168.50.254/ self_update=0
+
+LABEL SLES12.3
+  #ipAPPEND 2
+  KERNEL ../../SLES12.3/boot/x86_64/loader/linux
+  APPEND initrd=../../SLES12.3/boot/x86_64/loader/initrd instsys=tftp://192.168.50.254/SLES12.3/boot/x86_64/root install=ftp://192.168.50.254/ self_update=0
+
+LABEL bclinux7.8
+  #ipAPPEND 2
+  KERNEL ../../bclinux7.8/vmlinuz
+  APPEND initrd=../../bclinux7.8/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL bclinux8.2
+  #ipAPPEND 2
+  KERNEL ../../bclinux8.2/vmlinuz
+  APPEND initrd=../../bclinux8.2/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL centos7.4
+  #ipAPPEND 2
+  KERNEL ../../centos7.4/vmlinuz
+  APPEND initrd=../../centos7.4/initrd.img inst.repo=ftp://192.168.50.254/
+
+
+LABEL centos7.9
+  #ipAPPEND 2
+  KERNEL ../../centos7.9_pxe/vmlinuz
+  APPEND initrd=../../centos7.9_pxe/initrd.img inst.repo=ftp://192.168.50.254/ 
+
+LABEL centos8.1
+  #ipAPPEND 2
+  KERNEL ../../centos8.1/vmlinuz
+  APPEND initrd=../../centos8.1/initrd.img inst.repo=ftp://192.168.50.254/
+
+
+LABEL centos8.2
+  #ipAPPEND 2
+  KERNEL ../../centos8.2/vmlinuz
+  APPEND initrd=../../centos8.2/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL centos8.3
+  #ipAPPEND 2
+  KERNEL ../../centos8.3/vmlinuz
+  APPEND initrd=../../centos8.3/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL centos8.4
+  #ipAPPEND 2
+  KERNEL ../../centos8.4/vmlinuz
+  APPEND initrd=../../centos8.4/initrd.img inst.repo=ftp://192.168.50.254/
+
+
+LABEL Oracle7.9
+  #ipAPPEND 2
+  KERNEL ../../ol7.9_pxe/vmlinuz
+  APPEND initrd=../../ol7.9_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL Oracle8.2
+  #ipAPPEND 2
+  KERNEL ../../ol8.2_pxe/vmlinuz
+  APPEND initrd=../../ol8.2_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL Oracle8.3
+  #ipAPPEND 2
+  KERNEL ../../ol8.3_pxe/vmlinuz
+  APPEND initrd=../../ol8.3_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL Oracle8.4
+  #ipAPPEND 2
+  KERNEL ../../ol8.4/vmlinuz
+  APPEND initrd=../../ol8.4/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL Oracle8.5
+  #ipAPPEND 2
+  KERNEL ../../ol8.5/vmlinuz
+  APPEND initrd=../../ol8.5/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel7.8
+  #ipAPPEND 2
+  KERNEL ../../rhel7.8_pxe/vmlinuz
+  APPEND initrd=../../rhel7.8_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel7.9
+  #ipAPPEND 2
+  KERNEL ../../rhel7.9_pxe/vmlinuz
+  APPEND initrd=../../rhel7.9_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel8.2
+  #ipAPPEND 2
+  KERNEL ../../rhel8.2_pxe/vmlinuz
+  APPEND initrd=../../rhel8.2_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel8.3
+  #ipAPPEND 2
+  KERNEL ../../rhel8.3_pxe/vmlinuz
+  APPEND initrd=../../rhel8.3_pxe/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel8.4
+  #ipAPPEND 2
+  KERNEL ../../rhel8.4/vmlinuz
+  APPEND initrd=../../rhel8.4/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel8.5
+  #ipAPPEND 2
+  KERNEL ../../rhel8.5/vmlinuz
+  APPEND initrd=../../rhel8.5/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL rhel8.6
+  #ipAPPEND 2
+  KERNEL ../../rhel8.6/vmlinuz
+  APPEND initrd=../../rhel8.6/initrd.img inst.repo=ftp://192.168.50.254/
+
+
+LABEL openeuler20.03
+  #ipAPPEND 2
+  KERNEL ../../openeuler20.03SP1/vmlinuz
+  APPEND initrd=../../openeuler20.03SP1/initrd.img inst.repo=ftp://192.168.50.254/
+
+LABEL ubuntu20.04.1
+  #ipAPPEND 2
+  KERNEL ../../ubuntu20.04.1/vmlinuz
+  APPEND initrd=../../ubuntu20.04.1/initrd ip=dhcp root=/dev/ram0 ramdisk_size=1500000 url=ftp://192.168.50.254/ubuntu20.04.1.iso
+
+LABEL ubuntu20.04.2
+  #ipAPPEND 2
+  KERNEL ../../ubuntu20.04.2/vmlinuz
+  APPEND initrd=../../ubuntu20.04.2/initrd ip=dhcp root=/dev/ram0 ramdisk_size=1500000 url=ftp://192.168.50.254/ubuntu20.04.2.iso
+
+LABEL ubuntu20.04.3
+  #ipAPPEND 2
+  KERNEL ../../ubuntu20.04.3/vmlinuz
+  APPEND initrd=../../ubuntu20.04.3/initrd ip=dhcp root=/dev/ram0 ramdisk_size=1500000 url=ftp://192.168.50.254/ubuntu20.04.3.iso
+
+LABEL kylinV10SP1
+  #ipAPPEND 2
+  KERNEL ../../kylinV10SP1/vmlinuz
+  APPEND initrd=../../kylinV10SP1/initrd.lz ip=dhcp root=/dev/ram0 ramdisk_size=1500000 url=ftp://192.168.50.254/kylinV10SP1.iso
+
+LABEL ubuntu18.04.6_4.15.0
+  #ipAPPEND 2
+  KERNEL ../../ubuntu18_i386/ubuntu-installer/i386/linux
+  APPEND initrd=../../ubuntu18_i386/ubuntu-installer/i386/initrd.gz ip=dhcp
+
+LABEL debian9.x
+  #ipAPPEND 2
+  KERNEL ../../debian9.x/debian-installer/amd64/linux
+  APPEND initrd=../../debian9.x/debian-installer/amd64/initrd.gz ip=dhcp
+
+LABEL debian10.x
+  #ipAPPEND 2
+  KERNEL ../../debian10.x/debian-installer/amd64/linux
+  APPEND initrd=../../debian10.x/debian-installer/amd64/initrd.gz ip=dhcp
+
