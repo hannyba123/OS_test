@@ -1,0 +1,189 @@
+串口连接
+ipmcset -t sol -d activate -v 1 0
+ipmcset -t sol -d deactivate -v 1
+救援模式黑屏
+nano /boot/gru/grub.cfg
+console=ttyAMA0,115200 console=tty0
+console=ttyS0,115200 console=tty0
+reboot
+BIOS打开SPCR
+串口全量日志
+echo 7 > /proc/sys/kernel/printk
+loglevel=7
+ISO安装切命令行
+ctrl+alt+F6
+查看网口PING包报文大小（MTU）
+tcpdump -i ethX|grep -i "ICMP echo request"
+ping -s MTU IP
+debian修改配置
+dpkg-reconfigure kexec-tools
+dpkg-reconfigure kdump-tools
+kdump crashkernel
+crashkernel=1024M,high crashkernel_auto_mem=1
+BMC无法访问
+ipmcset -d rollback
+ethtool -S查看网卡丢包
+ifconfig查看OS丢包
+安装图形界面
+yum grouplist
+yum groupinstall -y ‘’
+开机启动服务配置
+vi /etc/systemd/system/tan_reboot.service
+[Unit]
+Description=Longtime
+reboot test
+[Service]
+Type=simple
+ExecStart=/bin/bash /root/XXXX.sh start 
+[Install]
+WantedBy=multi-user.target
+systemctl daemon-reload
+systemctl enable XXXX.service
+systemctl start XXXX.service
+vi XXXX.sh
+case "$1" in
+start)
+	if [ -f $count_file ]
+	then
+		r_second
+	else
+		r_first
+	fi
+	;;
+*)
+	echo "Usage: $0
+{start}"
+	exit
+	;;
+esac
+清RAID
+删除命令如下
+mdadm -S /dev/md124
+mdadm -S /dev/md125
+添加bond配置
+nmcli con show
+nmcli connection add type bond con-name bond0 ifname bond0 bond.options "mode=balance-alb,miimon=100"
+nmcli connection modify bond0 ipv4.addresses 'x.x.x.x/24' ipv4.gateway "x.x.x.x"
+nmcli connectin reload
+nmcli connection up bond0
+nmcli connection add type bond-slave ifname eth? master bond0
+nmcli con up bond-slave-eth0
+nmcli con up bond-slave-eth1
+ip addr show bond0
+cat /proc/net/bonding/bond0
+删除bond
+nmcli connection delete bond0
+nmcli connection delete bond-slave-eth0
+nmcli connection delete bond-slave-eth1
+ko文件编译与升级
+debian
+1安装gcc：apt install gcc
+2apt install make*
+3apt install linux-headers-$(uname-r)
+修改compile文件路径为/usr/src/linux-headers**/
+驱动打入initrd.img
+mkdir /usr/lib/modules/'uname -r'/updates/
+cp -a *.ko /usr/lib/modules/'uname -r'/updates/
+depmod 'uname -r'
+update-initramfs -u
+将驱动打入ISO方法
+cp -a initrd.img /tmp
+cd /tmp
+zx -dc initrd.img|cpio -id
+rm -rf initrd.img
+cp -a *.ko /usr/lib/modules/'uname -r'/updates/
+depmod 'uname -r'
+update-initramfs -u
+find . | cpio -c -o |xz -9 --format=lzma > initrd.img
+拷贝initrd.img替换ISOinitrd.img
+rpm获取ko文件
+安装rpm2targz,转换rpm驱动为tar.gz,解压获取ko文件，insmod加载
+NCSI
+查询
+ipmitool raw 0x0c 0x01 0x01 0xd7 0xdb 0x07 0x00 0x01
+命令最后为对应模式
+1--专用bmc网口
+2--板载网卡NCSI
+3--自适应
+4--PCIE网口
+5--汇聚bond网口
+查看硬盘IO使用率
+iostat -x 1 10000
+查看网口使用率
+yum install sysstat
+sar -n DEV 1 2000
+ifconfig 安装
+yum install net-tools
+输出100次
+ping -c 100 -s MTU IP
+交换机设置IP
+放进同一个VLAN
+设置vlanif可ping
+Postman设置BIOS选项
+输入base登录账号密码
+获取现在BIOS配置和BiosAttributeRegistry版本
+GET https://X.X.X.X/redfish/v1/Systems/1/Bios
+获取可以设置的value
+GET https://X.X.X.X/redfish/v1/RegistryStore/AttributeRegistries/en/BiosAttributeRegistry.v4_5_1.json
+根据上述选项可选值，修改指定选项
+PATCH https://X.X.X.X/redfish/v1/Systems/1/Bios/Settings
+修改match-if为获取值
+发送Send，重启服务器
+fio命令
+yum install fio libaio-devel
+fio --direct=1 --ioengine=libaio --rw=read/write/randread/randwrite --runtime=300 --time_based(固定时间) --bs=4k/32k/128k/4M(具体看硬盘参考值) --numjobs=1 --iodepth=32 --ramp_time=180 --output=/home/read/read_4k.log --continue_on_error=io --new_group --group_reporting --name=1 --filename=/dev/sda 
+源配置
+yum
+vi /etc/yum.repo.d/base.repo
+[iso_repo]
+name=iso_repo
+baseurl=file:///mnt
+enabled=1
+gpgcheck=0
+apt
+nano /etc/apt/source.list
+deb [trusted=yes] file:///mnt/(dist) bionic main
+云系统root登录
+vi /etc/ssh/sshd_config
+AllowUsers root
+
+查看是否打开SMMU虚拟化
+cat /sys/class/iomem
+网口调优
+ethtoo -K eth0
+ethtool -K eth0 tx-tcp-mangleid-segmentation on
+ethtool -G eth0 rx 8192 tx 8192
+ifconfig eth0 mtu 9600
+ethtool -L eth0 combined 63
+systemctl stop irqbalance
+systemctl disable irqbalance
+systemctl stop firewalld
+systemctl disable firewalld
+网口自环
+网线连接网口
+ip netns add 空间名字
+ip link set 网口 netns 空间名字
+ip netns exec 空间名字
+ip netns list
+先down空间网口，再删除空间
+ip netns del 空间名字
+查看网卡总线
+ll /sys/class/net
+查看网卡固件
+ethtool -i 网口
+查看光模块
+ethtool -m 网口
+查看网卡信息
+lspci|grep ethernet
+lspci -vvvs bdf
+查看网卡四人组
+lspci -kns bdf 
+debian取消休眠
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+UDP冲包需要多IP多进程
+100G需要绑核
+绑核操作
+taskset -c ？
+cat /sys/class/net/网口/device/numa_node
+UDP :taskset -c ? iperf -c X.X.X.X -u -b 100G -l MTU-40 -t 600 -P 2 -p 50001
+TCP :taskset -c ?  iperf -c X.X.X.X  -b 100G -l MTU-40 -t 600 -P 20 -p 50001
